@@ -1,16 +1,11 @@
-FROM python:3.10-slim
+from fastapi import FastAPI
+import uvicorn
 
-WORKDIR /app
+app = FastAPI()
 
-# Kopjojmë vetëm requirements fillimisht
-COPY requirements.txt .
+@app.get("/")
+def read_root():
+    return {"status": "ok", "message": "Noteri-im API is running!"}
 
-RUN pip install --no-cache-dir -r requirements.txt
-
-# Tani kopjojmë gjithë backend-in
-COPY . .
-
-# Ekspozojmë portin
-EXPOSE 8000
-
-CMD ["python", "main.py"]
+if __name__ == "__main__":
+    uvicorn.run("main:app", host="0.0.0.0", port=8000)
