@@ -1,11 +1,17 @@
-from fastapi import FastAPI
-import uvicorn
+# Use official Python image
+FROM python:3.10-slim
 
-app = FastAPI()
+# Set working directory
+WORKDIR /app
 
-@app.get("/")
-def read_root():
-    return {"status": "ok", "message": "Noteri-im API is running!"}
+# Copy backend source code
+COPY . /app
 
-if __name__ == "__main__":
-    uvicorn.run("main:app", host="0.0.0.0", port=8000)
+# Install dependencies
+RUN pip install --no-cache-dir -r backend/requirements.txt
+
+# Expose port 8000
+EXPOSE 8000
+
+# Start FastAPI with uvicorn
+CMD ["uvicorn", "backend.main:app", "--host", "0.0.0.0", "--port", "8000"]
