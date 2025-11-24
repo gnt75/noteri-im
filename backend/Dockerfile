@@ -1,16 +1,16 @@
-FROM python:3.10
+FROM python:3.10-slim
 
-# Vendosim direktorinë e punës
 WORKDIR /app
 
-# Kopjojmë vetëm backend-in në container
-COPY backend/ /app/
+# Kopjojmë vetëm requirements fillimisht
+COPY requirements.txt .
 
-# Install dependencies
 RUN pip install --no-cache-dir -r requirements.txt
 
-# Ekspozojmë portin (8000 nëse ke uvicorn)
+# Tani kopjojmë gjithë backend-in
+COPY . .
+
+# Ekspozojmë portin
 EXPOSE 8000
 
-# Komanda startuese — path i saktë
-CMD ["python", "app/main.py"]
+CMD ["python", "main.py"]
